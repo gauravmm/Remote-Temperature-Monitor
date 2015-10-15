@@ -19,7 +19,7 @@ These two parts communicate over the 868 MHz band using a generic Xbee clone. Th
 
 ## Progress
 
-Broadly speaking, the breadboarding (for both the base and remote sensor) is mostly done, and the base station software is coming along quite nicely. The remote
+Broadly speaking, the breadboarding (for both the base and remote sensor) is mostly done, and the base station software is coming along quite nicely.
 
 The next major course of action (after Tic-Tac-Toe is graded) is to build the user interaction.
 
