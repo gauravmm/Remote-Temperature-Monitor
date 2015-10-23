@@ -1,12 +1,16 @@
 #include "srfhandler.h"
 
+#include "config_base.h"
+
 // 2^32 - 1
 #define ULONG_MAX_VAL 4294967295L
 
 uint8_t srf_pinT = 0;
 uint8_t srf_pinE = 0;
-uint8_t srf_state;
-uint16_t srf_distance;
+volatile uint8_t srf_state;
+volatile uint8_t srf_attention_count = 0;
+volatile uint16_t srf_distance;
+volatile uint8_t srf_lose_focus = 0;
 unsigned long srf_timeRising = 0;
 void SRF_ECHO_ISR();
 void SRF_TIMER_ISR();
@@ -57,7 +61,9 @@ uint8_t srfhandler_get(uint16_t *val) {
     *val = srf_distance;
   }
 
-  return srf_state;
+  uint8_t rv = srf_state;
+  srf_state &= SRF_ATTENTION_HAVE;
+  return rv;
 }
 
 void SRF_ECHO_ISR(void) {
@@ -77,10 +83,48 @@ void SRF_ECHO_ISR(void) {
       duration = now - srf_timeRising;
     }
 
-    srf_distance = (uint16_t) (duration >> 6); // From micros to millis.
+    srf_distance = (uint16_t) (duration >> 6); // Scale it to a usable range.
     srf_state += 1;
+
     // Evolve the state.
+
+    if(srf_lose_focus) {
+    	srf_lose_focus = 0;
+    	srf_state = SRF_ATTENTION_LOST;
+    	srf_attention_count = 0;
+    }
+
+    if (srf_state & SRF_ATTENTION_HAVE) {
+      if (srf_distance >= SRF_SCALE_MIN && srf_distance <= SRF_SCALE_MAX) {
+        // We already have the attention. Nothing changes.
+        if(srf_attention_count < SRF_ATTENTION_TIME) {
+          srf_attention_count++;
+        }
+      } else {
+        if (--srf_attention_count == 0) {
+          srf_state = SRF_ATTENTION_LOST;
+        }
+      }
+    } else {
+      // The user doesnt yet have our attention. 
+      
+      // Is the signal in the attention zone?
+      if (srf_distance >= SRF_ATTENTION_MIN && srf_distance <= SRF_ATTENTION_MAX) {
+        // If the user has our attention.
+        if (++srf_attention_count >= SRF_ATTENTION_TIME) {
+          srf_state = SRF_ATTENTION_HAVE | SRF_ATTENTION_GOT;
+        }
+      } else {
+        if(srf_attention_count > 0) {
+          srf_attention_count--;
+        }
+      }
+    }
   }
+}
+
+void srfhandler_lose_focus() {
+	srf_lose_focus = 1;
 }
 
 void SRF_TIMER_ISR(void) {

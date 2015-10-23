@@ -5,7 +5,7 @@
 // Write directly to ports, using 
 volatile uint8_t *mosiport, *clkport, *csport, *dcport;
 uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
-
+uint8_t xorfilter = 0x00;
 
 // This must be called before the display can be used.
 // Initialization sequence, adapted from:

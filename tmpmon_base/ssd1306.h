@@ -81,6 +81,7 @@ void ssd1306_setup();
 
 extern volatile uint8_t *mosiport, *clkport, *csport, *dcport;
 extern uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
+extern uint8_t xorfilter;
 
 inline void fastSPIwrite(uint8_t d) {
   for(uint8_t bit = 0x80; bit; bit >>= 1) {
@@ -92,7 +93,7 @@ inline void fastSPIwrite(uint8_t d) {
   }
 }
 
-inline void fastSPIwriteArray(uint8_t* arr, uint8_t len) {
+inline void fastSPIwriteArray(const uint8_t* arr, uint8_t len) {
   while(len--)
     fastSPIwrite(*(arr++));
 }
@@ -107,8 +108,8 @@ inline void ssd1306_command(uint8_t c) {
 // Must be called before a sequence of calls to ssd1306_command.
 inline void ssd1306_command_begin() {
 	*csport |= cspinmask;  //digitalWrite(cs, HIGH);
-  	*dcport &= ~dcpinmask; //digitalWrite(dc, LOW);
-  	*csport &= ~cspinmask; //digitalWrite(cs, LOW);
+  *dcport &= ~dcpinmask; //digitalWrite(dc, LOW);
+  *csport &= ~cspinmask; //digitalWrite(cs, LOW);
 }
 
 inline void ssd1306_command_end() {
@@ -124,11 +125,15 @@ inline void ssd1306_data_begin() {
 }
 
 inline void ssd1306_data(uint8_t c) {
-  fastSPIwrite(c);
+  fastSPIwrite(c ^ xorfilter);
 }
 
 inline void ssd1306_data_end() {
-      *csport |= cspinmask; //digitalWrite(cs, HIGH);
+  *csport |= cspinmask; //digitalWrite(cs, HIGH);
+}
+
+inline void ssd1306_set_xor(uint8_t filter) {
+  xorfilter = filter;
 }
 
 #endif

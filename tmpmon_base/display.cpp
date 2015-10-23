@@ -4,9 +4,9 @@ void display_setup(){
 	ssd1306_setup();
 	
 	ssd1306_command_begin();
-  	// Set the addressing mode to columns:
+  	// Set the addressing mode to vertical:
   	ssd1306_command(0x20);
-  	ssd1306_command(0);
+  	ssd1306_command(0b01);
 	ssd1306_command_end();
 
   	display_clear();
@@ -40,13 +40,13 @@ void display_roi(uint8_t col, uint8_t page, uint8_t cols, uint8_t pages) {
   ssd1306_command_end();	
 }
 
-void display_draw(uint8_t **data, uint8_t n1, uint8_t n2){
+void display_draw(const uint8_t **data, uint8_t n1, uint8_t n2){
   ssd1306_data_begin();
   fastSPIwriteArray((uint8_t *) data, n1 * n2);
   ssd1306_data_end();
 }
 
-void display_draw(uint8_t *data, uint8_t n){
+void display_draw(const uint8_t *data, uint8_t n){
   ssd1306_data_begin();
   fastSPIwriteArray(data, n);
   ssd1306_data_end();
@@ -57,3 +57,5 @@ void display_draw(uint8_t data){
   fastSPIwrite(data);
   ssd1306_data_end();
 }
+
+

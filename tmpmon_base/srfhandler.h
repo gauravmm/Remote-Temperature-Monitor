@@ -14,5 +14,6 @@
 
 void srfhandler_begin(uint8_t pinTrigger, uint8_t pinEcho);
 uint8_t srfhandler_get(uint16_t *val);
+void srfhandler_lose_focus();
 
 #endif

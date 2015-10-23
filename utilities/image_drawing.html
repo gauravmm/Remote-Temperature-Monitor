@@ -21,11 +21,14 @@ input#wid, input#hei {
 </style>
 <script type="text/javascript">
 // Configuration options
-var sizeOfLED = 48; // Size of LED in pixels, including gutter
+var sizeOfLED = 36; // Size of LED in pixels, including gutter
 var sizeOfGutter = 2; // Size of gutter between LEDs
 var colorOff = "#000";
 var colorOn = "#F00";
 var colorGutter = "#666";
+
+var dragFlag = 0;
+var dragValue = 0;
 
 // Variables
 var canvasNode; // Main canvas node
@@ -155,7 +158,43 @@ function updateCanvasSize() {
 
 	canvasNode.id = "cvsled";
 	$('main').appendChild(canvasNode);
-	$('cvsled').addEventListener("click", canvasClick, false);
+	// $('cvsled').addEventListener("click", canvasClick, false);
+	
+	$('cvsled').addEventListener("mousedown", function(oEvent) {
+    	dragFlag = 1;
+
+		var pos_x = oEvent.offsetX?(oEvent.offsetX):oEvent.pageX-canvasNode.offsetLeft;
+		var pos_y = oEvent.offsetY?(oEvent.offsetY):oEvent.pageY-canvasNode.offsetTop;
+		
+		var cellX = Math.floor(pos_x/sizeOfLED);
+		var cellY = Math.floor(pos_y/sizeOfLED);
+
+		dragValue = !map[cellX][cellY];
+		map[cellX][cellY] = dragValue;
+		canvasRender();
+	}, false);
+	
+	document.addEventListener("mouseup", function(oEvent) {
+	    if(dragFlag === 1){
+	        dragFlag = 0;
+	    }
+	}, false);
+
+	$('cvsled').addEventListener("mousemove", function(oEvent) {
+    	if(dragFlag === 1) {
+    		var pos_x = oEvent.offsetX?(oEvent.offsetX):oEvent.pageX-canvasNode.offsetLeft;
+			var pos_y = oEvent.offsetY?(oEvent.offsetY):oEvent.pageY-canvasNode.offsetTop;
+			
+			var cellX = Math.floor(pos_x/sizeOfLED);
+			var cellY = Math.floor(pos_y/sizeOfLED);
+			
+			if(map[cellX][cellY] != dragValue) {
+				map[cellX][cellY] = dragValue;
+				canvasRender();
+			}
+    	}
+	});
+
 	
 	canvasRender();
 	
@@ -242,7 +281,7 @@ function settings(ver) {
 	} else if(ver == 3) {
 		pixelsInAByte = 8;
 		reversePixelOrder = true;
-		packByPage = true;
+		packByPage = false;
 	}
 	$("chkRevPx").checked = reversePixelOrder;
 	$("pxInByte").value = pixelsInAByte;
@@ -256,7 +295,7 @@ function settings(ver) {
 <body>
 <div id="main"></div><br />
 <div id="bin">
-Width: <input type="number" id="wid" min="1" value="6" onclick="updateCanvasSize()" /> Height: <input type="number" id="hei" min="1" value="8" onclick="updateCanvasSize()" /> <input type="button" value="Change" id="changecanvas" /> <input type="button" value="Load" id="loadimage" /> <input type="checkbox" id="chkUseCircle" onclick="updateUseCircle()" />Use Circle<br />
+Width: <input type="number" id="wid" min="1" value="8" onclick="updateCanvasSize()" /> Height: <input type="number" id="hei" min="1" value="16" onclick="updateCanvasSize()" /> <input type="button" value="Change" id="changecanvas" /> <input type="button" value="Load" id="loadimage" /> <input type="checkbox" id="chkUseCircle" onclick="updateUseCircle()" />Use Circle<br />
 Pixels per Byte: <input type="number" id="pxInByte" min="1" max="8" value="8" onchange="updatePxPerByte()" /><input type="checkbox" id="chkRevPx" onclick="updateReversePixel()" />Reverse Pixel Order
 <input type="checkbox" id="chkPackPage" onclick="updatePackByPage()" />Pack by Page <br />
  <button onclick="settings(1)">Version 1.0</button><button onclick="settings(2)">Version 2.0</button><button onclick="settings(3)">Version 3.0</button><br />
