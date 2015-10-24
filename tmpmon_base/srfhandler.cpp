@@ -7,11 +7,11 @@
 
 uint8_t srf_pinT = 0;
 uint8_t srf_pinE = 0;
-volatile uint8_t srf_state;
+volatile uint8_t srf_state = SRF_ATTENTION_LOST;
 volatile uint8_t srf_attention_count = 0;
 volatile uint16_t srf_distance;
 volatile uint8_t srf_lose_focus = 0;
-unsigned long srf_timeRising = 0;
+volatile unsigned long srf_timeRising = 0;
 void SRF_ECHO_ISR();
 void SRF_TIMER_ISR();
 
@@ -84,39 +84,39 @@ void SRF_ECHO_ISR(void) {
     }
 
     srf_distance = (uint16_t) (duration >> 6); // Scale it to a usable range.
-    srf_state += 1;
 
     // Evolve the state.
-
     if(srf_lose_focus) {
-    	srf_lose_focus = 0;
+    	// srf_lose_focus = 0;
     	srf_state = SRF_ATTENTION_LOST;
-    	srf_attention_count = 0;
+    	// srf_attention_count = 0;
     }
 
-    if (srf_state & SRF_ATTENTION_HAVE) {
-      if (srf_distance >= SRF_SCALE_MIN && srf_distance <= SRF_SCALE_MAX) {
-        // We already have the attention. Nothing changes.
-        if(srf_attention_count < SRF_ATTENTION_TIME) {
-          srf_attention_count++;
-        }
-      } else {
-        if (--srf_attention_count == 0) {
-          srf_state = SRF_ATTENTION_LOST;
+    // Is the signal in the attention zone?
+    uint8_t in_attention = srf_distance >= SRF_SCALE_MIN && srf_distance <= SRF_SCALE_MAX;
+
+    // If user is in attention region
+    if (in_attention) {
+      // Increase the attention count
+      if(srf_attention_count < SRF_ATTENTION_TIME) {
+        srf_attention_count++;
+
+        // If we have enough attention_count, we acquire attention
+        if (!(srf_state & SRF_ATTENTION_HAVE) && srf_attention_count == SRF_ATTENTION_TIME && !srf_lose_focus) {
+          srf_state = SRF_ATTENTION_HAVE | SRF_ATTENTION_GOT;
         }
       }
     } else {
-      // The user doesnt yet have our attention. 
-      
-      // Is the signal in the attention zone?
-      if (srf_distance >= SRF_ATTENTION_MIN && srf_distance <= SRF_ATTENTION_MAX) {
-        // If the user has our attention.
-        if (++srf_attention_count >= SRF_ATTENTION_TIME) {
-          srf_state = SRF_ATTENTION_HAVE | SRF_ATTENTION_GOT;
-        }
-      } else {
-        if(srf_attention_count > 0) {
-          srf_attention_count--;
+      // Decrease the attention count
+      if(srf_attention_count > 0) {
+        srf_attention_count--;
+
+        // If we currently have attention but have lost it
+        if (srf_attention_count == 0) {
+          srf_lose_focus = 0;
+          if (srf_state & SRF_ATTENTION_HAVE) {
+            srf_state = SRF_ATTENTION_LOST;
+          }
         }
       }
     }

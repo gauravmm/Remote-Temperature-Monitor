@@ -1,4 +1,4 @@
-// Temperature Monitor
+ // Temperature Monitor
 // CSCI 1600 Fall 2015
 // Gaurav Manek <gmanek>
 
@@ -16,6 +16,8 @@
 void setup() {
   display_setup();
   slider_begin(PIN_SRF_TRIG, PIN_SRF_ECHO, PIN_AUDIO_INT);  
+  // srfhandler_begin(PIN_SRF_TRIG, PIN_SRF_ECHO);
+
   
   Serial.begin(9600);
 }
@@ -25,6 +27,7 @@ void loop() {
 
   uint16_t val = 0;
   uint8_t sl = slider_get(&val);
+  // uint8_t sl = srfhandler_get(&val);
   
   Serial.print(sl);
   Serial.print('\t');
@@ -33,7 +36,7 @@ void loop() {
 
   if (sl & SLIDER_ACTIVE) {
     if (sl & SLIDER_CLICK) {
-      //slider_lose_focus();
+      slider_lose_focus();
       //return;
     }
 
@@ -41,18 +44,19 @@ void loop() {
     if (val > 63) {
       val = 63;
     }
+    val = 63 - val;
 
     for (uint16_t i = 0; i < DISPLAY_WIDTH; ++i) {
       for(uint8_t j = 0; j < 8; ++j) {
-        uint8_t num = val - j*8;
+        uint16_t num = val - j*8;
         if (val < j*8)
           num = 0;
           
-        num = (num > 7)?7:num;
+        num = (num > 8)?8:num;
 
         num = ((1 << num) - 1) | (1 << num);
-        display_draw(num); 
+        display_draw((uint8_t) (~num)); 
       }
-    }  
+    }
   }
 }
