@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include "srfhandler.h"
 #include "audiohandler.h"
+#include "DataSmoothing.h"
 
 #define SLIDER_NONE 	SRF_ATTENTION_NONE
 #define SLIDER_ACTIVE 	SRF_ATTENTION_HAVE
@@ -18,7 +19,7 @@
 
 void slider_begin(uint8_t pinSRFTrigger, uint8_t pinSRFEcho, uint8_t pinAudioInt);
 
-uint8_t slider_get(uint16_t *slider_value);
+uint8_t slider_get(uint8_t *slider_value);
 
 // Forcibly remove focus from the slider. 
 #define slider_lose_focus() srfhandler_lose_focus()

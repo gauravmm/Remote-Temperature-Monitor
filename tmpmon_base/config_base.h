@@ -22,7 +22,7 @@
 
 // Clicking
 // Double-click settings:
-#define DOUBLECLICK_GAP_MIN 400
+#define DOUBLECLICK_GAP_MIN 300
 #define DOUBLECLICK_GAP_MAX 1000
 
 
