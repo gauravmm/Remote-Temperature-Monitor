@@ -58,7 +58,7 @@ The next major course of action (after Tic-Tac-Toe is graded) is to build the us
    - [ ] Screen
      - [X] Display library (Written for Tic-Tac-Toe)
      - [ ] Graphics
-     - [X] 15x15 Font
+     - [X] 15x11 Font
    - [ ] User Interaction
      - [X] Distance scale
        - [X] Attention model ('recognize a user wants to issue commands')
@@ -76,7 +76,7 @@ The next major course of action (after Tic-Tac-Toe is graded) is to build the us
 ## Changes from Proposal
  - `XRF` wireless radio instead of `nRF24L01`
  - More complex user interaction:
-    - Instead of buttons, we use the `SRF05` ultrasonic distance sensor to allow for no-touch user interaction.
+   - Instead of buttons, we use the `SRF05` ultrasonic distance sensor to allow for no-touch user interaction.
  - Upgrade from `ATTiny 85` to Arduino Nano V3.0
     - I need the stability & reliability of the hardware UART support.
  - Change from TI TMP007 IR thermocouple to Maxim DS18B20 1-Wire Digital Thermometer 
