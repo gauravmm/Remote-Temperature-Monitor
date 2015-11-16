@@ -1,11 +1,6 @@
 # Temperature Monitor
 Gaurav Manek
 
-## Font
-
-The original screen font is based on font from:
-https://github.com/gauravmm/HT1632-for-Arduino/tree/master/Arduino/HT1632
-=======
 # Remote-Temperature-Monitor
 CS1600 Final Project
 Fall 2015, Brown University
@@ -42,24 +37,23 @@ The next major course of action (after Tic-Tac-Toe is graded) is to build the us
    - [X] Microphone with op-amp signal booster
    - [X] Assorted bits and bobs
  - [ ] Breadboarding
-     - [ ] Base Station
+     - [X] Base Station
      - [X] Arduino Mega 2560
-     - [ ] Screen
+     - [X] Screen
      - [X] Ultrasonic Sensor
      - [X] Microphone
      - [ ] Buzzer
-     - [ ] Wireless RF radio
+     - [X] Wireless RF radio
    - [ ] Remote Sensor
      - [X] Arduino Nano V3.0
      - [X] `TMP007` Breakout Board
-     - [ ] Wireless RF radio
-     - [ ] Status LED
- - [ ] Protoboarding
+     - [X] Wireless RF radio
+     - [X] Status LED
   
 ### Software
 
- - [ ] Common
-   - [ ] Protocol design
+ - [X] Common
+   - [X] Protocol design
  - [ ] Base Station
    - [ ] Screen
      - [X] Display library (Written for Tic-Tac-Toe)
@@ -73,10 +67,10 @@ The next major course of action (after Tic-Tac-Toe is graded) is to build the us
        - [X] Interrupt-based double-clap detection.
      - [ ] Audio Output
      - [ ] Interface
- - [ ] Remote Sensor
-   - [ ] TMP007 Interfacing
-   - [ ] Communication 
-   - [ ] Power Management
+ - [X] Remote Sensor
+   - [X] DS18B20 Interfacing
+   - [X] Communication 
+   - [X] LED
 
 
 ## Changes from Proposal
@@ -85,3 +79,14 @@ The next major course of action (after Tic-Tac-Toe is graded) is to build the us
     - Instead of buttons, we use the `SRF05` ultrasonic distance sensor to allow for no-touch user interaction.
  - Upgrade from `ATTiny 85` to Arduino Nano V3.0
     - I need the stability & reliability of the hardware UART support.
+ - Change from TI TMP007 IR thermocouple to Maxim DS18B20 1-Wire Digital Thermometer 
+    - Recieved a faulty TMP007, and already had some DS18B20. Replacing the TMP007 would take too long (a few weeks)
+
+## Font
+
+The original screen font is based on font from:
+https://github.com/gauravmm/HT1632-for-Arduino/tree/master/Arduino/HT1632
+
+## Progress from Last Report
+
+Since the last report, I have written the software for the remote sensor station, and changed the type of temperature sensor I'm using. The LED uses the Inferno color map from Matplotlib, chosen for perceptual linearity. (http://bids.github.io/colormap/)
