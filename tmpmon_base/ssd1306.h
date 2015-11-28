@@ -93,9 +93,9 @@ inline void fastSPIwrite(uint8_t d) {
   }
 }
 
-inline void fastSPIwriteArray(const uint8_t* arr, uint8_t len) {
+inline void ssd1306_data_array(const uint8_t* arr, uint8_t len) {
   while(len--)
-    fastSPIwrite(*(arr++));
+    fastSPIwrite((*(arr++)) ^ xorfilter);
 }
 
 

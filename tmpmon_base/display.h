@@ -4,6 +4,7 @@
 #include "ssd1306.h"
 
 #define DISPLAY_WIDTH SSD1306_LCDWIDTH
+#define DISPLAY_PAGES SSD1306_PAGE_COUNT
 
 void display_setup();
 void display_clear();
@@ -25,5 +26,8 @@ void display_draw(const uint8_t *data, uint8_t n);
 
 // Send 1 byte instructions to the display
 void display_draw(uint8_t data);
+
+// Send n bytes instructions to the display from PROGMEM
+void display_draw_progmem(const uint8_t *data, uint8_t n);
 
 #endif
