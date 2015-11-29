@@ -95,9 +95,8 @@ void loop(void){
     sensors.requestTemperatures(); // Send the command to get temperatures
     // After we got the temperatures, we can print them here.
     // We use the function ByIndex, and as an example get the temperature from the first sensor only.
-    Serial.print(sensors.getTempCByIndex(0));  
-    Serial.print(",");
-    Serial.print(sensors.getTempCByIndex(1));  
+    float t = sensors.getTempCByIndex(0)/2 + sensors.getTempCByIndex(1)/2;
+    Serial.print(t);  
     Serial.println();
 
     lastUpdate = now;
