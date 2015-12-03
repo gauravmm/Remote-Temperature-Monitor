@@ -22,15 +22,15 @@ These two parts communicate over the 868 MHz band using a generic Xbee clone. Th
 I used the following libraries/code/etc. in this project:
 
   - Font design and rendering code from previous work by me. 
-    - [https://github.com/gauravmm/HT1632-for-Arduino](HT1632 for Arduino library)
+    - [HT1632 for Arduino library](https://github.com/gauravmm/HT1632-for-Arduino)
   - Matplotlib colormap 'Magma' by Nathaniel J. Smith and Stefan van der Walt
-    - [https://github.com/BIDS/colormap/blob/master/colormaps.py](mpl colormaps)
+    - [mpl colormaps](https://github.com/BIDS/colormap/blob/master/colormaps.py)
     - Released under CC0 license
   - Arduino Library for Maxim Temperature Integrated Circuits by Miles Burton, Tim Newsome, et. al.
-    - [https://github.com/milesburton/Arduino-Temperature-Control-Library](Arduino Temperature Control Library)
+    - [Arduino Temperature Control Library](https://github.com/milesburton/Arduino-Temperature-Control-Library)
     - Released under the GNU Lesser General Public License 
   - OneWire Library by Paul Stoffregen, Jim Studt, et. al.
-    - [www.pjrc.com/teensy/td_libs_OneWire.html](OneWire Library)
+    - [OneWire Library](www.pjrc.com/teensy/td_libs_OneWire.html)
     - Released to public domain
 
 The rest of the code is mine, and released under the MIT License.
