@@ -30,7 +30,7 @@ I used the following libraries/code/etc. in this project:
     - [Arduino Temperature Control Library](https://github.com/milesburton/Arduino-Temperature-Control-Library)
     - Released under the GNU Lesser General Public License 
   - OneWire Library by Paul Stoffregen, Jim Studt, et. al.
-    - [OneWire Library](www.pjrc.com/teensy/td_libs_OneWire.html)
+    - [OneWire Library](http://www.pjrc.com/teensy/td_libs_OneWire.html)
     - Released to public domain
 
 The rest of the code is mine, and released under the MIT License.
