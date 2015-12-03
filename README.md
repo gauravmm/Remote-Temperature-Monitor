@@ -20,70 +20,34 @@ The separate base has a screen, a buzzer, and some no-touch user interaction. Th
 
 These two parts communicate over the 868 MHz band using a generic Xbee clone. The device bodies will be 3d-printed.
 
-## Progress
+## Attribution
 
-I have completed the project, now I'll be testing it and (possibly) making a sensor mount for the remote sensor.
+I used the following libraries/code/etc. in this project:
 
-### Hardware
- - [X] Procurement
-   - [X] Arduino Nano V3.0
-   - [X] Arduino Mega 2560
-   - [X] `XRF` wireless RF radio (863 MHz band)
-   - [X] `SSD1306` Screen
-   - [X] TI `TMP007` Breakout Board
-   - [X] `SRF05` ultrasonic distance sensor
-   - [X] Microphone with op-amp signal booster
-   - [X] Assorted bits and bobs
- - [X] Breadboarding
-     - [X] Base Station
-     - [X] Arduino Mega 2560
-     - [X] Screen
-     - [X] Ultrasonic Sensor
-     - [X] Microphone
-     - [X] Buzzer
-     - [X] Wireless RF radio
-   - [X] Remote Sensor
-     - [X] Arduino Nano V3.0
-     - [X] `TMP007` Breakout Board
-     - [X] Wireless RF radio
-     - [X] Status LED
-  
-### Software
+  - Font design and rendering code from previous work by me. 
+    - [https://github.com/gauravmm/HT1632-for-Arduino](HT1632 for Arduino library)
+  - Matplotlib colormap 'Magma' by Nathaniel J. Smith and Stefan van der Walt
+    - [https://github.com/BIDS/colormap/blob/master/colormaps.py](mpl colormaps)
+    - Released under CC0 license
+  - Arduino Library for Maxim Temperature Integrated Circuits by Miles Burton, Tim Newsome, et. al.
+    - [https://github.com/milesburton/Arduino-Temperature-Control-Library](Arduino Temperature Control Library)
+    - Released under the GNU Lesser General Public License 
+  - OneWire Library by Paul Stoffregen, Jim Studt, et. al.
+    - [www.pjrc.com/teensy/td_libs_OneWire.html](OneWire Library)
+    - Released to public domain
 
- - [X] Common
-   - [X] Protocol design
- - [X] Base Station
-   - [X] Screen
-     - [X] Display library (Written for Tic-Tac-Toe)
-     - [X] Graphics
-     - [X] 15x11 Font
-   - [X] User Interaction
-     - [X] Distance scale
-       - [X] Attention model ('recognize a user wants to issue commands')
-       - [X] Interrupt-based sensor polling.
-     - [X] Click sensor
-       - [X] Interrupt-based double-clap detection.
-     - [X] Audio Output
-     - [X] Interface
- - [X] Remote Sensor
-   - [X] DS18B20 Interfacing
-   - [X] Communication 
-   - [X] LED
-
+The rest of the code is mine, and released under the MIT License.
 
 ## Changes from Proposal
  - `XRF` wireless radio instead of `nRF24L01`
  - More complex user interaction:
    - Instead of buttons, we use the `SRF05` ultrasonic distance sensor to allow for no-touch user interaction.
  - Upgrade from `ATTiny 85` to Arduino Nano V3.0
-    - I need the stability & reliability of the hardware UART support.
+    - I need the stability & reliability of the hardware Serial support.
  - Change from TI TMP007 IR thermocouple to Maxim DS18B20 1-Wire Digital Thermometer 
-    - Recieved a faulty TMP007, and already had some DS18B20. Replacing the TMP007 would take too long (a few weeks)
+    - Recieved a faulty TMP007, and already had some DS18B20. Replacing the TMP007 would take too long.
  - Added features
     - Two interfaces to choose from.
     - Font upscaling, with automatic smoothing.
-
-## Font
-
-The original screen font is based on font from:
-https://github.com/gauravmm/HT1632-for-Arduino/tree/master/Arduino/HT1632
+    - Unit choice
+    - Bidirectional alarm
