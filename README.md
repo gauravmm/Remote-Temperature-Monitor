@@ -1,7 +1,4 @@
-# Temperature Monitor
-Gaurav Manek
-
-# Remote-Temperature-Monitor
+# Wireless Cooking Thermometer
 CS1600 Final Project
 Fall 2015, Brown University
 Gaurav Manek <gmanek>
