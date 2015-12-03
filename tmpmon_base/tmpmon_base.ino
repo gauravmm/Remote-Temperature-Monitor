@@ -67,6 +67,42 @@ void setUnit(uint8_t unit) {
   }
 }
 
+// Parse integer part of positive floats, discard the rest.
+uint8_t parseInp(float *val) {
+  static uint16_t v = 0;
+  static uint8_t flush = 0;
+
+  while(!flush && Serial.available()) {
+    char c = Serial.peek();
+    if (c >= '0' && c <= '9') {
+      v = v * 10 + (c - '0');
+      Serial.read();
+    } else {
+      flush = 1;
+      if(v) {
+        if(val)
+          *val = (float) v;
+        v = 0;
+        return 1;
+      }
+    }
+  }
+
+  // Flush
+  if(flush) {
+    while(Serial.available()) {
+      char c = Serial.read();
+      if(c == '\n'){
+        flush = 0;
+        v = 0;
+        break;
+      }
+    }
+  }
+  
+  return 0;
+}
+
 uint8_t x = 0;
 uint8_t curr_focus = FOCUS_NONE;
 uint8_t prev_serial_tmp = 0;
@@ -77,17 +113,9 @@ void loop() {
   float temperature = x;
   
   // Receive Serial comms
-  if(Serial.available()) {
-    temperature = Serial.parseFloat();
-    if(temperature > 0) {
-      graphData.push(temperature);
-      // Flush
-      while(Serial.available()) {
-        char c = Serial.read();
-        if(c == '\n')
-          break;
-      }
-    }
+  uint8_t rv = parseInp(&temperature);
+  if(rv && temperature > 0) {
+    graphData.push(temperature);
   }
 
   // Process/Update the data
@@ -118,6 +146,7 @@ void loop() {
     if (serial_temp != prev_serial_tmp) {
       prev_serial_tmp = serial_temp;
       // Send LED instructions
+      Serial.print('V');
       Serial.println(serial_temp);
     }
   }
