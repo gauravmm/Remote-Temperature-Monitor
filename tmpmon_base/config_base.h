@@ -37,7 +37,7 @@
 #define SRF_SCALE_MAX 		SRF_CM(63)
 
 // Alarm controls
-#define ALARM_DURATION	    200
+#define ALARM_DURATION	    100
 #define ALARM_PERIOD          2
 #define ALARM_SET_BLINK       1
 
