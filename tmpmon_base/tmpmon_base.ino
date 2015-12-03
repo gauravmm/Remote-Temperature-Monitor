@@ -122,7 +122,7 @@ void loop() {
 
   // Check alarm
   if(tempAlarmSet) {
-    uint8_t tempTrigger = tempAlarmIncreasing?(temperature > tempAlarmValue):(temperature < tempAlarmValue);
+    uint8_t tempTrigger = tempAlarmIncreasing?(graphData.val() > tempAlarmValue):(graphData.val() < tempAlarmValue);
     if (tempTrigger) {
       tempAlarmSet = 0;
       tempAlarmCountdown = ALARM_DURATION;

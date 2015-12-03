@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-with serial.Serial("COM15", 115200) as ser:
+with serial.Serial("COM15", 9600) as ser:
     period = 120;
     
     while True:
@@ -14,6 +14,6 @@ with serial.Serial("COM15", 115200) as ser:
             bytesToRead = ser.inWaiting()
             print ser.read(bytesToRead)
             print
-            time.sleep(1.0);
+            time.sleep(1);
             
         
